@@ -39,3 +39,24 @@ const createTodo = (project, todoData) =>{
     saveData({ projects: state.projects });
     renderTodos(project.todos);
 };
+
+// Function to switch between projects
+const switchProject = (project) => {
+  state.currentProject = project;
+  renderTodos(project.todos);
+};
+
+// Initial rendering
+renderProjects(state.projects);
+
+// Example: Creating a project and a todo
+createProject('Default Project');
+switchProject(state.projects[0]);
+createTodo(state.projects[0], {
+  title: 'Sample Todo',
+  description: 'This is a sample todo.',
+  dueDate: '2024-02-15',
+  priority: 'High',
+  notes: 'Additional notes here.',
+  checklist: ['Task 1', 'Task 2'],
+});
