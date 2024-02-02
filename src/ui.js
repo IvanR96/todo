@@ -1,9 +1,11 @@
-const projectListContainer = document.getElementById('project-list');
-const todoListContainer = document.getElementById('todo-list');
-const todoDetailsContainer = document.getElementById('todo-details');
+
+const appContainer = document.getElementById('app');
 
 const renderProjects = (projects) => {
-  projectListContainer.innerHTML = '';
+  appContainer.innerHTML = ''; // Clear the content before rendering
+  const projectListContainer = document.createElement('div');
+  projectListContainer.classList.add('project-list');
+  
   projects.forEach((project) => {
     const projectItem = document.createElement('div');
     projectItem.classList.add('project-item');
@@ -13,23 +15,31 @@ const renderProjects = (projects) => {
     });
     projectListContainer.appendChild(projectItem);
   });
+  
+  appContainer.appendChild(projectListContainer);
 };
 
 const renderTodos = (todos) => {
-  todoListContainer.innerHTML = '';
+  const todoListContainer = document.createElement('div');
+  todoListContainer.classList.add('todo-list');
+  
   todos.forEach((todo) => {
     const todoItem = document.createElement('div');
     todoItem.classList.add('todo-item');
     todoItem.textContent = `${todo.title} - Due: ${todo.dueDate}`;
     todoItem.addEventListener('click', () => {
-      renderTodoDetails(todo);
+      renderTodoDetails(todo);  // Call renderTodoDetails when a todo is clicked
     });
     todoListContainer.appendChild(todoItem);
   });
+  
+  appContainer.innerHTML = '';  // Clear the content before rendering
+  appContainer.appendChild(todoListContainer);
 };
 
 const renderTodoDetails = (todo) => {
-  todoDetailsContainer.innerHTML = '';
+  const todoDetailsContainer = document.createElement('div');
+  todoDetailsContainer.classList.add('todo-details');
   
   const title = document.createElement('h2');
   title.textContent = todo.title;
@@ -60,6 +70,9 @@ const renderTodoDetails = (todo) => {
   todoDetailsContainer.appendChild(priority);
   todoDetailsContainer.appendChild(notes);
   todoDetailsContainer.appendChild(checklist);
+  
+  appContainer.appendChild(todoDetailsContainer);
 };
+
 
 export { renderProjects, renderTodos, renderTodoDetails };
