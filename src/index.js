@@ -1,18 +1,17 @@
 import _ from "lodash";
+import Project from "./project.js";
 import Todo from "./todo.js";
 import { saveData, getData } from "./storage.js";
 import { renderProjects , renderTodos, renderTodoDetails } from "./ui.js";
 
 const state = {
-    currentProject: null,
-    projects: [],
-}
+  currentProject: null,
+  projects: [],
+};
 
-
-// start app data from storage (local)
-
+// Initialize app data from localStorage
 const savedData = getData();
-if (savedData) {
+if (savedData && savedData.projects) {
   state.projects = savedData.projects.map((project) => {
     const newProject = new Project(project.name);
     newProject.todos = project.todos.map((todo) => new Todo(...Object.values(todo)));
@@ -20,24 +19,20 @@ if (savedData) {
   });
 }
 
+// Function to create a new project
+const createProject = (name) => {
+  const newProject = new Project(name);
+  state.projects.push(newProject);
+  saveData({ projects: state.projects });
+  renderProjects(state.projects);
+};
 
-// creates new project
-
-const createProject = (name) =>{
-    const newProject = new Project(name);
-    state.projects.push(name);
-    saveData({ projects: state.projects});
-    renderProjects(state.projects);
-}
-
-
-// makes new todo
-
-const createTodo = (project, todoData) =>{
-    const newTodo = new Todo(...Object.values(todoData));
-    project.todos.push(newTodo);
-    saveData({ projects: state.projects });
-    renderTodos(project.todos);
+// Function to create a new todo
+const createTodo = (project, todoData) => {
+  const newTodo = new Todo(...Object.values(todoData));
+  project.todos.push(newTodo);
+  saveData({ projects: state.projects });
+  renderTodos(project.todos);
 };
 
 // Function to switch between projects
